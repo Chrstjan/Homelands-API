@@ -11,7 +11,7 @@ cityController.get("/cities", async (req, res) => {
       return res.status(404).json({ message: "No Cities found" });
     }
 
-    res.json(result);
+    res.json(cities);
   } catch (err) {
     res.status(500).send({
       message: `Error in CitiesModel: ${err}`,

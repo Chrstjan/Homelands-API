@@ -7,14 +7,10 @@ export class EnergyLabel extends Model {}
 EnergyLabel.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,
-      references: {
-        model: EstatesModel,
-        key: "energy_label_id",
-      },
     },
     name: {
       type: DataTypes.STRING,

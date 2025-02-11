@@ -30,7 +30,7 @@ ReviewsModel.init(
       allowNull: false,
     },
     estate_id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: EstatesModel,
@@ -38,7 +38,7 @@ ReviewsModel.init(
       },
     },
     user_id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: UsersModel,

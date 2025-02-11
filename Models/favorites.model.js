@@ -1,7 +1,7 @@
 import { sequelize } from "../Config/sequelize.config.js";
 import { DataTypes, Model } from "sequelize";
-import { UsersModel } from "./users.model.js";
 import { EstatesModel } from "./estates.model.js";
+import { UsersModel } from "./users.model.js";
 
 export class FavoritesModel extends Model {}
 
@@ -14,7 +14,7 @@ FavoritesModel.init(
       primaryKey: true,
     },
     user_id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: UsersModel,
@@ -22,7 +22,7 @@ FavoritesModel.init(
       },
     },
     estate_id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: EstatesModel,

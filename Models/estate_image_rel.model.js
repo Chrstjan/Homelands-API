@@ -14,7 +14,7 @@ EstateImageRel.init(
       primaryKey: true,
     },
     estate_id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: EstatesModel,

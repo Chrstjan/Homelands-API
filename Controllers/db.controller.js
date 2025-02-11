@@ -36,11 +36,11 @@ dbController.get("/sync", async (req, res) => {
 
 dbController.get("/seed", async (req, res) => {
   try {
-    await seedFromCsv("image", ImagesModel);
+    await seedFromCsv("image.csv", ImagesModel);
     await seedFromCsv("estate.csv", EstatesModel);
     await seedFromCsv("estate-type.csv", EstateTypes);
     await seedFromCsv("estate-image-rel.csv", EstateImageRel);
-    await seedFromCsv("energy-label", EnergyLabel);
+    await seedFromCsv("energy-label.csv", EnergyLabel);
     await seedFromCsv("city.csv", CitiesModel);
     await seedFromCsv("staff.csv", StaffsModel);
     await seedFromCsv("user.csv", UsersModel);

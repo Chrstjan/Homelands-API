@@ -1,20 +1,15 @@
 import { sequelize } from "../Config/sequelize.config.js";
 import { DataTypes, Model } from "sequelize";
-import { EstatesModel } from "./estates.model.js";
 
 export class EstateTypes extends Model {}
 
 EstateTypes.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,
-      references: {
-        model: EstatesModel,
-        key: "type_id",
-      },
     },
     name: {
       type: DataTypes.STRING,

@@ -1,7 +1,5 @@
 import { sequelize } from "../Config/sequelize.config.js";
 import { DataTypes, Model } from "sequelize";
-import { FavoritesModel } from "./favorites.model.js";
-import { ReviewsModel } from "./reviews.model.js";
 import bcrypt from "bcrypt";
 
 export class UsersModel extends Model {}
@@ -9,18 +7,10 @@ export class UsersModel extends Model {}
 UsersModel.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,
-      references: {
-        model: FavoritesModel,
-        key: "user_id",
-      },
-      references: {
-        model: ReviewsModel,
-        key: "user_id",
-      },
     },
     firstname: {
       type: DataTypes.STRING,
