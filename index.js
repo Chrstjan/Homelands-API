@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import dbController from "./Controllers/db.controller.js";
+import { authController } from "./Controllers/auth.controller.js";
 import { estateController } from "./Controllers/estates.controller.js";
 import { estateTypeController } from "./Controllers/estate_type.controller.js";
 import { cityController } from "./Controllers/cities.controller.js";
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 
 app.use(
   dbController,
+  authController,
   estateController,
   estateTypeController,
   cityController,

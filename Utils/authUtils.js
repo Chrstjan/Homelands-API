@@ -10,7 +10,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
-import { UsersModel } from "../Models/users.model";
+import { UsersModel } from "../Models/users.model.js";
 
 dotenv.config();
 
