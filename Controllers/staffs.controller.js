@@ -40,9 +40,9 @@ staffsController.get("/staff/:id([0-9]*)", async (req, res) => {
 });
 
 staffsController.post("/staff", async (req, res) => {
-  const { firstname, lastname, position, photo, email, phone } = req.body;
+  const { firstname, lastname, position, image, email, phone } = req.body;
 
-  if (!firstname || !lastname || !position || !photo || !email || !phone) {
+  if (!firstname || !lastname || !position || !image || !email || !phone) {
     return res.status(400).json({ message: `You need to add all fields` });
   }
 

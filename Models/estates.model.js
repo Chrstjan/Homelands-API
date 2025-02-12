@@ -58,16 +58,16 @@ EstatesModel.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    year_of_construction: {
+    year_construction: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    year_rebuild: {
+    year_rebuilt: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     floorplan: {
