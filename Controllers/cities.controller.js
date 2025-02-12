@@ -1,5 +1,6 @@
 import express from "express";
 import { CitiesModel } from "../Models/cities.model.js";
+import { Authorize } from "../Utils/authUtils.js";
 
 export const cityController = express.Router();
 
@@ -41,7 +42,7 @@ cityController.get("/cities/:id([0-9]*)", async (req, res) => {
   }
 });
 
-cityController.post("/cities", async (req, res) => {
+cityController.post("/cities", Authorize, async (req, res) => {
   const { zipcode, name } = req.body;
 
   if (!zipcode || !name) {
@@ -60,7 +61,7 @@ cityController.post("/cities", async (req, res) => {
   }
 });
 
-cityController.put("/cities", async (req, res) => {
+cityController.put("/cities", Authorize, async (req, res) => {
   const { id, zipcode, name } = req.body;
 
   if (id && zipcode && name) {
@@ -87,7 +88,7 @@ cityController.put("/cities", async (req, res) => {
   }
 });
 
-cityController.delete("/cities/:id([0-9]*)", async (req, res) => {
+cityController.delete("/cities/:id([0-9]*)", Authorize, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
 

@@ -1,5 +1,6 @@
 import express from "express";
 import { FavoritesModel } from "../Models/favorites.model.js";
+import { Authorize } from "../Utils/authUtils.js";
 
 export const favoritesController = express.Router();
 
@@ -39,7 +40,7 @@ favoritesController.get("/favorites/:id([0-9]*)", async (req, res) => {
   }
 });
 
-favoritesController.post("/favorites", async (req, res) => {
+favoritesController.post("/favorites", Authorize, async (req, res) => {
   const { user_id, estate_id } = req.body;
 
   if (!user_id || !estate_id) {
@@ -58,7 +59,7 @@ favoritesController.post("/favorites", async (req, res) => {
   }
 });
 
-favoritesController.put("/favorites", async (req, res) => {
+favoritesController.put("/favorites", Authorize, async (req, res) => {
   const { id, user_id, estate_id } = req.body;
 
   if (id && user_id && estate_id) {
@@ -74,7 +75,7 @@ favoritesController.put("/favorites", async (req, res) => {
         });
       } else {
         res.status(404).json({
-          message: `Favorite with ${id} was not found in the database`,
+          message: `Favorite with id: ${id} was not found in the database`,
         });
       }
     } catch (err) {
@@ -89,22 +90,28 @@ favoritesController.put("/favorites", async (req, res) => {
   }
 });
 
-favoritesController.delete("/favorites/:id([0-9]*)", async (req, res) => {
-  try {
-    const id = parseInt(req.params.id, 10);
+favoritesController.delete(
+  "/favorites/:id([0-9]*)",
+  Authorize,
+  async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
 
-    let result = await FavoritesModel.destroy({ where: { id } });
+      let result = await FavoritesModel.destroy({ where: { id } });
 
-    if (result > 0) {
-      res
-        .status(200)
-        .json({ message: `Favorite with id ${id} has been deleted` });
-    } else {
-      res.status(404).json({ message: `Favorite with id ${id} was not found` });
+      if (result > 0) {
+        res
+          .status(200)
+          .json({ message: `Favorite with id ${id} has been deleted` });
+      } else {
+        res
+          .status(404)
+          .json({ message: `Favorite with id ${id} was not found` });
+      }
+    } catch (err) {
+      res.status(500).json({
+        message: `Error in EstatesModel: ${err.message}`,
+      });
     }
-  } catch (err) {
-    res.status(500).json({
-      message: `Error in EstatesModel: ${err.message}`,
-    });
   }
-});
+);

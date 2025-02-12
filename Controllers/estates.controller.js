@@ -1,5 +1,6 @@
 import express from "express";
 import { EstatesModel } from "../Models/estates.model.js";
+import { Authorize } from "../Utils/authUtils.js";
 
 export const estateController = express.Router();
 
@@ -41,7 +42,7 @@ estateController.get("/estates/:id([0-9]*)", async (req, res) => {
   }
 });
 
-estateController.post("/estates", async (req, res) => {
+estateController.post("/estates", Authorize, async (req, res) => {
   const { address, price, cost, num_rooms, city_id, type_id } = req.body;
 
   if (!address || !price || !cost || !num_rooms || !city_id || !type_id) {
@@ -60,7 +61,7 @@ estateController.post("/estates", async (req, res) => {
   }
 });
 
-estateController.put("/estates", async (req, res) => {
+estateController.put("/estates", Authorize, async (req, res) => {
   const { id, address, price, cost, num_rooms, city_id, type_id } = req.body;
 
   if (id && address && price && cost && num_rooms && city_id && type_id) {
@@ -73,7 +74,7 @@ estateController.put("/estates", async (req, res) => {
         });
       } else {
         res.status(404).json({
-          message: `Estate with ${id} was not found in the database`,
+          message: `Estate with id: ${id} was not found in the database`,
         });
       }
     } catch (err) {
@@ -88,7 +89,7 @@ estateController.put("/estates", async (req, res) => {
   }
 });
 
-estateController.delete("/estates/:id([0-9]*)", async (req, res) => {
+estateController.delete("/estates/:id([0-9]*)", Authorize, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
 

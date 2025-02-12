@@ -1,5 +1,6 @@
 import express from "express";
 import { ReviewsModel } from "../Models/reviews.model.js";
+import { Authorize } from "../Utils/authUtils.js";
 
 export const reviewsController = express.Router();
 
@@ -39,7 +40,7 @@ reviewsController.get("/reviews/:id([0-9]*)", async (req, res) => {
   }
 });
 
-reviewsController.post("/reviews", async (req, res) => {
+reviewsController.post("/reviews", Authorize, async (req, res) => {
   const { subject, comment, num_stars, date, estate_id, user_id } = req.body;
 
   if (!subject || !comment || !estate_id || !user_id || !date || !num_stars) {
@@ -58,7 +59,7 @@ reviewsController.post("/reviews", async (req, res) => {
   }
 });
 
-reviewsController.put("/reviews", async (req, res) => {
+reviewsController.put("/reviews", Authorize, async (req, res) => {
   const {
     id,
     subject,
@@ -85,11 +86,11 @@ reviewsController.put("/reviews", async (req, res) => {
 
       if (result[0] > 0) {
         res.status(200).json({
-          message: `Estate updated`,
+          message: `Review updated`,
         });
       } else {
         res.status(404).json({
-          message: `Review with ${id} was not found in the database`,
+          message: `Review with id: ${id} was not found in the database`,
         });
       }
     } catch (err) {
@@ -104,22 +105,26 @@ reviewsController.put("/reviews", async (req, res) => {
   }
 });
 
-reviewsController.delete("/reviews/:id([0-9]*)", async (req, res) => {
-  try {
-    const id = parseInt(req.params.id, 10);
+reviewsController.delete(
+  "/reviews/:id([0-9]*)",
+  Authorize,
+  async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
 
-    let result = await ReviewsModel.destroy({ where: { id } });
+      let result = await ReviewsModel.destroy({ where: { id } });
 
-    if (result > 0) {
-      res
-        .status(200)
-        .json({ message: `Review with id ${id} has been deleted` });
-    } else {
-      res.status(404).json({ message: `Review with id ${id} was not found` });
+      if (result > 0) {
+        res
+          .status(200)
+          .json({ message: `Review with id ${id} has been deleted` });
+      } else {
+        res.status(404).json({ message: `Review with id ${id} was not found` });
+      }
+    } catch (err) {
+      res.status(500).json({
+        message: `Error in ReviewsModel: ${err.message}`,
+      });
     }
-  } catch (err) {
-    res.status(500).json({
-      message: `Error in ReviewsModel: ${err.message}`,
-    });
   }
-});
+);

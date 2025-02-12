@@ -1,5 +1,6 @@
 import express from "express";
 import { StaffsModel } from "../Models/staffs.model.js";
+import { Authorize } from "../Utils/authUtils.js";
 
 export const staffsController = express.Router();
 
@@ -39,7 +40,7 @@ staffsController.get("/staff/:id([0-9]*)", async (req, res) => {
   }
 });
 
-staffsController.post("/staff", async (req, res) => {
+staffsController.post("/staff", Authorize, async (req, res) => {
   const { firstname, lastname, position, image, email, phone } = req.body;
 
   if (!firstname || !lastname || !position || !image || !email || !phone) {
@@ -58,7 +59,7 @@ staffsController.post("/staff", async (req, res) => {
   }
 });
 
-staffsController.put("/staff", async (req, res) => {
+staffsController.put("/staff", Authorize, async (req, res) => {
   const { id, firstname, lastname, position, photo, email, phone } = req.body;
 
   if (id && firstname && lastname && position && photo && email && phone) {
@@ -85,7 +86,7 @@ staffsController.put("/staff", async (req, res) => {
   }
 });
 
-staffsController.delete("/staff/:id([0-9]*)", async (req, res) => {
+staffsController.delete("/staff/:id([0-9]*)", Authorize, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
 

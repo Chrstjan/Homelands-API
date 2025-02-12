@@ -1,5 +1,6 @@
 import express from "express";
 import { UsersModel } from "../Models/users.model.js";
+import { Authorize } from "../Utils/authUtils.js";
 
 export const userController = express.Router();
 
@@ -58,7 +59,7 @@ userController.post("/users", async (req, res) => {
   }
 });
 
-userController.put("/users", async (req, res) => {
+userController.put("/users", Authorize, async (req, res) => {
   const { id, firstname, lastname, email, password } = req.body;
 
   if (id && firstname && lastname && email && password) {
@@ -89,7 +90,7 @@ userController.put("/users", async (req, res) => {
   }
 });
 
-userController.delete("/users", async (req, res) => {
+userController.delete("/users/:id([0-9]*)", Authorize, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
 

@@ -1,5 +1,6 @@
 import express from "express";
 import { EstateTypes } from "../Models/estate_types.model.js";
+import { Authorize } from "../Utils/authUtils.js";
 
 export const estateTypeController = express.Router();
 
@@ -39,7 +40,7 @@ estateTypeController.get("/estate-type/:id([0-9]*)", async (req, res) => {
   }
 });
 
-estateTypeController.post("/estate-type", async (req, res) => {
+estateTypeController.post("/estate-type", Authorize, async (req, res) => {
   const { name } = req.body;
 
   if (!name) {
@@ -58,7 +59,7 @@ estateTypeController.post("/estate-type", async (req, res) => {
   }
 });
 
-estateTypeController.put("/estate-type", async (req, res) => {
+estateTypeController.put("/estate-type", Authorize, async (req, res) => {
   const { id, name } = req.body;
 
   if (id && name) {
@@ -71,7 +72,7 @@ estateTypeController.put("/estate-type", async (req, res) => {
         });
       } else {
         res.status(404).json({
-          message: `Estate with ${id} was not found in the database`,
+          message: `Estate Type with id: ${id} was not found in the database`,
         });
       }
     } catch (err) {
@@ -86,24 +87,28 @@ estateTypeController.put("/estate-type", async (req, res) => {
   }
 });
 
-estateTypeController.delete("/estate-type/:id([0-9]*)", async (req, res) => {
-  try {
-    const id = parseInt(req.params.id, 10);
+estateTypeController.delete(
+  "/estate-type/:id([0-9]*)",
+  Authorize,
+  async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
 
-    let result = await EstateTypes.destroy({ where: { id } });
+      let result = await EstateTypes.destroy({ where: { id } });
 
-    if (result > 0) {
-      res
-        .status(200)
-        .json({ message: `Estate Type with id ${id} has been deleted` });
-    } else {
-      res
-        .status(404)
-        .json({ message: `Esate Type with id ${id} was not found` });
+      if (result > 0) {
+        res
+          .status(200)
+          .json({ message: `Estate Type with id ${id} has been deleted` });
+      } else {
+        res
+          .status(404)
+          .json({ message: `Esate Type with id ${id} was not found` });
+      }
+    } catch (err) {
+      res.status(500).json({
+        essage: `Error in EstateTypes: ${err.message}`,
+      });
     }
-  } catch (err) {
-    res.status(500).json({
-      essage: `Error in EstateTypes: ${err.message}`,
-    });
   }
-});
+);
