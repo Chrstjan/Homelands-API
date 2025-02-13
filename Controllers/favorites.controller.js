@@ -14,7 +14,39 @@ UsersModel.hasMany(FavoritesModel);
 
 favoritesController.get("/favorites", async (req, res) => {
   try {
-    let favorites = await FavoritesModel.findAll();
+    let favorites = await FavoritesModel.findAll({
+      include: [
+        {
+          model: UsersModel,
+          attributes: ["id", "firstname", "lastname", "email"],
+        },
+        {
+          model: EstatesModel,
+          attributes: [
+            "id",
+            "address",
+            "price",
+            "payout",
+            "gross",
+            "net",
+            "cost",
+            "num_rooms",
+            "num_floors",
+            "floor_space",
+            "ground_space",
+            "basement_space",
+            "year_construction",
+            "year_rebuilt",
+            "description",
+            "floorplan",
+            "num_clicks",
+            "city_id",
+            "estate_type_id",
+            "energy_label_id",
+          ],
+        },
+      ],
+    });
 
     if (!favorites || favorites.length === 0) {
       return res.status(404).json({ message: "No Favorites found" });
@@ -32,7 +64,40 @@ favoritesController.get("/favorites/:id([0-9]*)", async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
 
-    let result = await FavoritesModel.findOne({ where: { id: id } });
+    let result = await FavoritesModel.findOne({
+      where: { id: id },
+      include: [
+        {
+          model: UsersModel,
+          attributes: ["id", "firstname", "lastname", "email"],
+        },
+        {
+          model: EstatesModel,
+          attributes: [
+            "id",
+            "address",
+            "price",
+            "payout",
+            "gross",
+            "net",
+            "cost",
+            "num_rooms",
+            "num_floors",
+            "floor_space",
+            "ground_space",
+            "basement_space",
+            "year_construction",
+            "year_rebuilt",
+            "description",
+            "floorplan",
+            "num_clicks",
+            "city_id",
+            "estate_type_id",
+            "energy_label_id",
+          ],
+        },
+      ],
+    });
 
     if (!result) {
       return res

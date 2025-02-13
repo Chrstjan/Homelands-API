@@ -14,7 +14,39 @@ UsersModel.hasMany(ReviewsModel);
 
 reviewsController.get("/reviews", async (req, res) => {
   try {
-    let reviews = await ReviewsModel.findAll();
+    let reviews = await ReviewsModel.findAll({
+      include: [
+        {
+          model: UsersModel,
+          attributes: ["id", "firstname", "lastname", "email"],
+        },
+        {
+          model: EstatesModel,
+          attributes: [
+            "id",
+            "address",
+            "price",
+            "payout",
+            "gross",
+            "net",
+            "cost",
+            "num_rooms",
+            "num_floors",
+            "floor_space",
+            "ground_space",
+            "basement_space",
+            "year_construction",
+            "year_rebuilt",
+            "description",
+            "floorplan",
+            "num_clicks",
+            "city_id",
+            "estate_type_id",
+            "energy_label_id",
+          ],
+        },
+      ],
+    });
 
     if (!reviews || reviews.length === 0) {
       return res.status(404).json({ message: "No Reviews found" });
@@ -32,7 +64,40 @@ reviewsController.get("/reviews/:id([0-9]*)", async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
 
-    let result = await ReviewsModel.findOne({ where: { id: id } });
+    let result = await ReviewsModel.findOne({
+      where: { id: id },
+      include: [
+        {
+          model: UsersModel,
+          attributes: ["id", "firstname", "lastname", "email"],
+        },
+        {
+          model: EstatesModel,
+          attributes: [
+            "id",
+            "address",
+            "price",
+            "payout",
+            "gross",
+            "net",
+            "cost",
+            "num_rooms",
+            "num_floors",
+            "floor_space",
+            "ground_space",
+            "basement_space",
+            "year_construction",
+            "year_rebuilt",
+            "description",
+            "floorplan",
+            "num_clicks",
+            "city_id",
+            "estate_type_id",
+            "energy_label_id",
+          ],
+        },
+      ],
+    });
 
     if (!result) {
       return res

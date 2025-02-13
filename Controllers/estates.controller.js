@@ -4,6 +4,8 @@ import { Authorize } from "../Utils/authUtils.js";
 import { CitiesModel } from "../Models/cities.model.js";
 import { EstateTypes } from "../Models/estate_types.model.js";
 import { EnergyLabel } from "../Models/energy_labels.model.js";
+import { ImagesModel } from "../Models/images.model.js";
+import { EstateImageRel } from "../Models/estate_image_rel.model.js";
 
 export const estateController = express.Router();
 
@@ -16,9 +18,31 @@ EstateTypes.hasMany(EstatesModel);
 EstatesModel.belongsTo(EnergyLabel);
 EnergyLabel.hasMany(EstatesModel);
 
+EstatesModel.belongsToMany(ImagesModel, { through: EstateImageRel });
+ImagesModel.belongsToMany(EstatesModel, { through: EstateImageRel });
+
 estateController.get("/estates", async (req, res) => {
   try {
-    let estates = await EstatesModel.findAll();
+    let estates = await EstatesModel.findAll({
+      include: [
+        {
+          model: CitiesModel,
+          attributes: ["id", "zipcode", "name"],
+        },
+        {
+          model: EstateTypes,
+          attributes: ["id", "name"],
+        },
+        {
+          model: EnergyLabel,
+          attributes: ["id", "name"],
+        },
+        {
+          model: ImagesModel,
+          attributes: ["id", "filename", "author", "description"],
+        },
+      ],
+    });
 
     if (!estates || estates.length === 0) {
       return res.status(404).json({ message: "No Estates found" });
@@ -38,6 +62,24 @@ estateController.get("/estates/:id([0-9]*)", async (req, res) => {
 
     let result = await EstatesModel.findOne({
       where: { id: id },
+      include: [
+        {
+          model: CitiesModel,
+          attributes: ["id", "zipcode", "name"],
+        },
+        {
+          model: EstateTypes,
+          attributes: ["id", "name"],
+        },
+        {
+          model: EnergyLabel,
+          attributes: ["id", "name"],
+        },
+        {
+          model: ImagesModel,
+          attributes: ["id", "filename", "author", "description"],
+        },
+      ],
     });
 
     if (!result) {

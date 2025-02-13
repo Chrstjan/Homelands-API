@@ -6,7 +6,7 @@ export class ImagesModel extends Model {}
 ImagesModel.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,

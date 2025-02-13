@@ -8,7 +8,7 @@ export class EstateImageRel extends Model {}
 EstateImageRel.init(
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,
@@ -22,7 +22,7 @@ EstateImageRel.init(
       },
     },
     image_id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: ImagesModel,
