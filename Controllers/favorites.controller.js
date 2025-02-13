@@ -1,8 +1,16 @@
 import express from "express";
 import { FavoritesModel } from "../Models/favorites.model.js";
 import { Authorize } from "../Utils/authUtils.js";
+import { UsersModel } from "../Models/users.model.js";
+import { EstatesModel } from "../Models/estates.model.js";
 
 export const favoritesController = express.Router();
+
+FavoritesModel.belongsTo(EstatesModel);
+EstatesModel.hasMany(FavoritesModel);
+
+FavoritesModel.belongsTo(UsersModel);
+UsersModel.hasMany(FavoritesModel);
 
 favoritesController.get("/favorites", async (req, res) => {
   try {

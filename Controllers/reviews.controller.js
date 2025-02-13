@@ -1,8 +1,16 @@
 import express from "express";
 import { ReviewsModel } from "../Models/reviews.model.js";
 import { Authorize } from "../Utils/authUtils.js";
+import { EstatesModel } from "../Models/estates.model.js";
+import { UsersModel } from "../Models/users.model.js";
 
 export const reviewsController = express.Router();
+
+ReviewsModel.belongsTo(EstatesModel);
+EstatesModel.hasMany(ReviewsModel);
+
+ReviewsModel.belongsTo(UsersModel);
+UsersModel.hasMany(ReviewsModel);
 
 reviewsController.get("/reviews", async (req, res) => {
   try {
